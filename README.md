@@ -1,2 +1,4 @@
 # ProceduralMapGenerator
-A procedural map generator in Unity. As this is mostly from me trying to better my understanding of procedural generation, it is of course going to be highly unoptimised.
+This is essentially just a quick way to generate and display a procedurally generated map onto a gameObject's material in Unity.
+
+Please read the NOTE.txt file for more detail
