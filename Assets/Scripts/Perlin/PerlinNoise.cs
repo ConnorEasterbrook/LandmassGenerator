@@ -166,8 +166,8 @@ public class PerlinNoise : MonoBehaviour
                 for (int i = 0; i < octaves; i++)
                 {
                     // Generate the height value of each pixel.                                  //   Divide by scale so that we don't get the same value every time.
-                    float sampleX = (x - halfMap + octaveOffsets[i].x) / noiseScale * frequency; // + octaveOffsets is because we want each octave to be sampled from the specified seed location
-                    float sampleY = (y - halfMap + octaveOffsets[i].y) / noiseScale * frequency; // - halfMap means changes will anchor to the center rather than top right of our map
+                    float sampleX = ((x - halfMap) / noiseScale + octaveOffsets[i].x) * frequency; // + octaveOffsets is because we want each octave to be sampled from the specified seed location
+                    float sampleY = ((y - halfMap) / noiseScale + octaveOffsets[i].y) * frequency; // - halfMap means changes will anchor to the center rather than top right of our map
 
                     // Create the perlin value of each pixel using the pixel values. We can get more interesting noise by allowing the perlin value to be negative (* 2 - 1)
                     float perlinValue = Mathf.PerlinNoise(sampleX, sampleY) * 2 - 1; 

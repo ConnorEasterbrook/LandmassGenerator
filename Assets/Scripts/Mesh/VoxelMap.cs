@@ -5,6 +5,7 @@ using UnityEngine;
 public class VoxelMap : MonoBehaviour
 {
     GameObject cubeParent; // Intended parent object of voxels
+    GameObject combinedObj;
 
     Material voxelMat;
 
@@ -77,7 +78,7 @@ public class VoxelMap : MonoBehaviour
     }
 
     private void MeshLoad (GameObject[] voxels, Material voxelMat, TerrainType[] regions)
-    {/*
+    {
         // Lists that hold mesh data belonging to the submesh depending on the region
         List <CombineInstance> deepWaterList    = new List <CombineInstance>();
         List <CombineInstance> shallowWaterList = new List <CombineInstance>();
@@ -88,116 +89,131 @@ public class VoxelMap : MonoBehaviour
         List <CombineInstance> mountainList     = new List <CombineInstance>();
         List <CombineInstance> mountainTipList  = new List <CombineInstance>();
 
-        // If the parent gameObject has no mesh filter then we should give it one
-        if (cubeParent.gameObject.GetComponent <MeshFilter>() == null)
-        {
-            cubeParent.transform.gameObject.AddComponent <MeshFilter>(); // Add a new meshFilter to our parent object
-        }
+        // Gameobjects created to house the voxels based on regions
+        GameObject deepWaterRegion      = new GameObject ("deepWaterRegion");
+        GameObject shallowWaterRegion   = new GameObject ("shallowWaterRegion");
+        GameObject sandRegion           = new GameObject ("sandRegion");
+        GameObject lowGrassRegion       = new GameObject ("lowGrassRegion");
+        GameObject highGrassRegion      = new GameObject ("highGrassRegion");
+        GameObject stoneRegion          = new GameObject ("stoneRegion");
+        GameObject mountainRegion       = new GameObject ("mountainRegion");
+        GameObject mountainTipRegion    = new GameObject ("mountainTipRegion");
 
-        // Add a MeshRenderer to our parent object if there isn't one
-        if (cubeParent.GetComponent <MeshRenderer>() == null)
-        {
-            cubeParent.AddComponent <MeshRenderer>();
-            MeshRenderer parentRenderer = cubeParent.GetComponent <MeshRenderer>();
-        }*/
+        // Set the correct transform for the region parents
+        deepWaterRegion     .transform.parent = cubeParent.transform;
+        shallowWaterRegion  .transform.parent = cubeParent.transform;
+        sandRegion          .transform.parent = cubeParent.transform;
+        lowGrassRegion      .transform.parent = cubeParent.transform;
+        highGrassRegion     .transform.parent = cubeParent.transform;
+        stoneRegion         .transform.parent = cubeParent.transform;
+        mountainRegion      .transform.parent = cubeParent.transform;
+        mountainTipRegion   .transform.parent = cubeParent.transform;
 
-        // Establish our arrays for mesh combination
-        MeshFilter[] meshes = GetComponentsInChildren <MeshFilter>();
-        CombineInstance[] combined = new CombineInstance [meshes.Length];
+        // Add the needed components to the region parents
+        deepWaterRegion     .AddComponent <MeshFilter>();
+        deepWaterRegion     .AddComponent <MeshRenderer>();
+        shallowWaterRegion  .AddComponent <MeshFilter>();
+        shallowWaterRegion  .AddComponent <MeshRenderer>();
+        sandRegion          .AddComponent <MeshFilter>();
+        sandRegion          .AddComponent <MeshRenderer>();
+        lowGrassRegion      .AddComponent <MeshFilter>();
+        lowGrassRegion      .AddComponent <MeshRenderer>();
+        highGrassRegion     .AddComponent <MeshFilter>();
+        highGrassRegion     .AddComponent <MeshRenderer>();
+        stoneRegion         .AddComponent <MeshFilter>();
+        stoneRegion         .AddComponent <MeshRenderer>();
+        mountainRegion      .AddComponent <MeshFilter>();
+        mountainRegion      .AddComponent <MeshRenderer>();
+        mountainTipRegion   .AddComponent <MeshFilter>();
+        mountainTipRegion   .AddComponent <MeshRenderer>();
 
         for (int i = 0; i < voxels.Length; i++)
         {
-            GameObject currentChunk = new GameObject();
-            currentChunk.transform.parent = cubeParent.transform;
-            currentChunk = voxels [i];
+            voxels [i].SetActive (false); // Hide the current cube
 
-            voxels [i].SetActive (false); // Hide the current cube*/
+            MeshFilter meshFilter = voxels [i].GetComponent <MeshFilter>(); // Make a new meshFilter and give it the current voxel's
 
-            // Establish our arrays for mesh combination
-            //MeshFilter[] meshes = currentChunk.GetComponentsInChildren<MeshFilter>(true); // Get all meshFilters in terrain. True to also find deactivated children
+            // Get the voxel material name for sorting purposes
+            MeshRenderer meshRenderer = voxels [i].GetComponent <MeshRenderer>();
+            string materialName = meshRenderer.material.name;
 
-            /*int index = -1; // Our voxel count
-
-            // Loop through all children of cube parent
-            for (int j = meshes.Length - 1; j >= 0; --j)
+            CombineInstance combine = new CombineInstance(); // Create a new Combine Instance
+            
+            // Find which list the cube belongs in
+            if (materialName == "Deep Water (Instance)")
             {
-                index++;
+                voxels [i].transform.parent = deepWaterRegion.transform;
 
-                MeshFilter meshFilter = meshes [j]; // Link each child meshFilter to a new meshfilter variable
-                MeshRenderer meshRenderer = voxels [i].GetComponent <MeshRenderer>();
-                string materialName = meshRenderer.material.name;
+                combine.mesh = meshFilter.mesh; // Match up our mesh with the specific mesh for combination
+                combine.transform = meshFilter.transform.localToWorldMatrix; // Keep combined mesh at general coordinate so nothing moves
 
-                CombineInstance combine = new CombineInstance(); // Create a new Combine Instance
-                
-                // Find which list the cube belongs in
-                if (materialName == "Deep Water (Instance)")
-                {
-                    GameObject listDWHolder = new GameObject();
-                    listDWHolder.transform.parent = cubeParent.transform;
-                    voxels [index].transform.parent = listDWHolder.transform;
+                deepWaterList.Add (combine); // Finally, add our mesh to the matching list
+            }
+            else if (materialName == "Water (Instance)")
+            {
+                voxels [i].transform.parent = shallowWaterRegion.transform;
 
-                    voxels [index].GetComponent <MeshRenderer>().material = voxelMat;
-                    combine.mesh = meshFilter.mesh; // Match up our mesh with the specific mesh for combination
-                    combine.transform = meshFilter.transform.localToWorldMatrix; // Keep combined mesh at general coordinate so nothing moves
+                combine.mesh = meshFilter.mesh; // Match up our mesh with the specific mesh for combination
+                combine.transform = meshFilter.transform.localToWorldMatrix; // Keep combined mesh at general coordinate so nothing moves
 
-                    deepWaterList.Add (combine); // Finally, add our mesh to the matching list
-                }
-                else if (materialName == "Water (Instance)")
-                {
-                    combine.mesh = meshFilter.mesh; // Match up our mesh with the specific mesh for combination
-                    combine.transform = meshFilter.transform.localToWorldMatrix; // Keep combined mesh at general coordinate so nothing moves
+                shallowWaterList.Add (combine); // Finally, add our mesh to the matching list
+            }
+            else if (materialName == "Sand (Instance)")
+            {
+                voxels [i].transform.parent = sandRegion.transform;
 
-                    shallowWaterList.Add (combine); // Finally, add our mesh to the matching list
-                }
-                else if (materialName == "Sand (Instance)")
-                {
-                    combine.mesh = meshFilter.mesh; // Match up our mesh with the specific mesh for combination
-                    combine.transform = meshFilter.transform.localToWorldMatrix; // Keep combined mesh at general coordinate so nothing moves
+                combine.mesh = meshFilter.mesh; // Match up our mesh with the specific mesh for combination
+                combine.transform = meshFilter.transform.localToWorldMatrix; // Keep combined mesh at general coordinate so nothing moves
 
-                    sandList.Add (combine); // Finally, add our mesh to the matching list
-                }
-                else if (materialName == "Low Land (Instance)")
-                {
-                    combine.mesh = meshFilter.mesh; // Match up our mesh with the specific mesh for combination
-                    combine.transform = meshFilter.transform.localToWorldMatrix; // Keep combined mesh at general coordinate so nothing moves
+                sandList.Add (combine); // Finally, add our mesh to the matching list
+            }
+            else if (materialName == "Low Land (Instance)")
+            {
+                voxels [i].transform.parent = lowGrassRegion.transform;
 
-                    lowGrassList.Add (combine); // Finally, add our mesh to the matching list
-                }
-                else if (materialName == "High Land (Instance)")
-                {
-                    combine.mesh = meshFilter.mesh; // Match up our mesh with the specific mesh for combination
-                    combine.transform = meshFilter.transform.localToWorldMatrix; // Keep combined mesh at general coordinate so nothing moves
+                combine.mesh = meshFilter.mesh; // Match up our mesh with the specific mesh for combination
+                combine.transform = meshFilter.transform.localToWorldMatrix; // Keep combined mesh at general coordinate so nothing moves
 
-                    highGrassList.Add (combine); // Finally, add our mesh to the matching list
-                }
-                else if (materialName == "Stone (Instance)")
-                {
-                    combine.mesh = meshFilter.mesh; // Match up our mesh with the specific mesh for combination
-                    combine.transform = meshFilter.transform.localToWorldMatrix; // Keep combined mesh at general coordinate so nothing moves
+                lowGrassList.Add (combine); // Finally, add our mesh to the matching list
+            }
+            else if (materialName == "High Land (Instance)")
+            {
+                voxels [i].transform.parent = highGrassRegion.transform;
 
-                    stoneList.Add (combine); // Finally, add our mesh to the matching list
-                }
-                else if (materialName == "Mountain (Instance)")
-                {
-                    combine.mesh = meshFilter.mesh; // Match up our mesh with the specific mesh for combination
-                    combine.transform = meshFilter.transform.localToWorldMatrix; // Keep combined mesh at general coordinate so nothing moves
+                combine.mesh = meshFilter.mesh; // Match up our mesh with the specific mesh for combination
+                combine.transform = meshFilter.transform.localToWorldMatrix; // Keep combined mesh at general coordinate so nothing moves
 
-                    mountainList.Add (combine); // Finally, add our mesh to the matching list
-                }
-                else if (materialName == "Mountain Tip (Instance)")
-                {
-                    combine.mesh = meshFilter.mesh; // Match up our mesh with the specific mesh for combination
-                    combine.transform = meshFilter.transform.localToWorldMatrix; // Keep combined mesh at general coordinate so nothing moves
+                highGrassList.Add (combine); // Finally, add our mesh to the matching list
+            }
+            else if (materialName == "Stone (Instance)")
+            {
+                voxels [i].transform.parent = stoneRegion.transform;
 
-                    mountainTipList.Add (combine); // Finally, add our mesh to the matching list
-                }*/
+                combine.mesh = meshFilter.mesh; // Match up our mesh with the specific mesh for combination
+                combine.transform = meshFilter.transform.localToWorldMatrix; // Keep combined mesh at general coordinate so nothing moves
 
-                combined [i].mesh = meshes [i].sharedMesh; // Combine all the meshes into one shared mesh
-                combined [i].transform = meshes [i].transform.localToWorldMatrix; // Keep combined mesh at general coordinate so nothing moves
-                meshes [i].gameObject.SetActive (false); // Disable our individual mesh filter now that we have an array containing all combined meshes
-            //}
+                stoneList.Add (combine); // Finally, add our mesh to the matching list
+            }
+            else if (materialName == "Mountain (Instance)")
+            {
+                voxels [i].transform.parent = mountainRegion.transform;
+
+                combine.mesh = meshFilter.mesh; // Match up our mesh with the specific mesh for combination
+                combine.transform = meshFilter.transform.localToWorldMatrix; // Keep combined mesh at general coordinate so nothing moves
+
+                mountainList.Add (combine); // Finally, add our mesh to the matching list
+            }
+            else if (materialName == "Mountain Tip (Instance)")
+            {
+                voxels [i].transform.parent = mountainTipRegion.transform;
+
+                combine.mesh = meshFilter.mesh; // Match up our mesh with the specific mesh for combination
+                combine.transform = meshFilter.transform.localToWorldMatrix; // Keep combined mesh at general coordinate so nothing moves
+
+                mountainTipList.Add (combine); // Finally, add our mesh to the matching list
+            }
         }
-        /*
+        
         // Combine the region type into a single mesh
         Mesh combinedDeepWaterMesh = new Mesh(); // Make it into a new mesh
         combinedDeepWaterMesh.CombineMeshes (deepWaterList.ToArray()); // Add all meshes in list to array
@@ -237,34 +253,41 @@ public class VoxelMap : MonoBehaviour
         totalMesh[7].mesh = combinedMountainTipMesh;
         totalMesh[7].transform = cubeParent.transform.localToWorldMatrix;
 
+        // Set our region parents to be the correct mesh filter
+        deepWaterRegion     .GetComponent <MeshFilter>().mesh = combinedDeepWaterMesh;
+        shallowWaterRegion  .GetComponent <MeshFilter>().mesh = combinedShallowWaterMesh;
+        sandRegion          .GetComponent <MeshFilter>().mesh = combinedSandMesh;
+        lowGrassRegion      .GetComponent <MeshFilter>().mesh = combinedLowGrassMesh;
+        highGrassRegion     .GetComponent <MeshFilter>().mesh = combinedHighGrassMesh;
+        stoneRegion         .GetComponent <MeshFilter>().mesh = combinedStoneMesh;
+        mountainRegion      .GetComponent <MeshFilter>().mesh = combinedMountainMesh;
+        mountainTipRegion   .GetComponent <MeshFilter>().mesh = combinedMountainTipMesh;
+
+        // Set our region parent to have a material that hasn't been influenced
+        deepWaterRegion     .GetComponent <MeshRenderer>().material = voxelMat;
+        shallowWaterRegion  .GetComponent <MeshRenderer>().material = voxelMat;
+        sandRegion          .GetComponent <MeshRenderer>().material = voxelMat;
+        lowGrassRegion      .GetComponent <MeshRenderer>().material = voxelMat;
+        highGrassRegion     .GetComponent <MeshRenderer>().material = voxelMat;
+        stoneRegion         .GetComponent <MeshRenderer>().material = voxelMat;
+        mountainRegion      .GetComponent <MeshRenderer>().material = voxelMat;
+        mountainTipRegion   .GetComponent <MeshRenderer>().material = voxelMat;
+
+        // Get our region parents to copy the material from the given cubes
+        deepWaterRegion     .GetComponent <MeshRenderer>().material.color = regions [0].colour;
+        shallowWaterRegion  .GetComponent <MeshRenderer>().material.color = regions [1].colour;
+        sandRegion          .GetComponent <MeshRenderer>().material.color = regions [2].colour;
+        lowGrassRegion      .GetComponent <MeshRenderer>().material.color = regions [3].colour;
+        highGrassRegion     .GetComponent <MeshRenderer>().material.color = regions [4].colour;
+        stoneRegion         .GetComponent <MeshRenderer>().material.color = regions [5].colour;
+        mountainRegion      .GetComponent <MeshRenderer>().material.color = regions [6].colour;
+        mountainTipRegion   .GetComponent <MeshRenderer>().material.color = regions [7].colour;
+
         // Create the final combined mesh
-        Mesh combinedAllMesh = new Mesh();
+        //Mesh combinedAllMesh = new Mesh();
 
         // Finally combine all the meshes. False so that regions are separate
-        combinedAllMesh.CombineMeshes (totalMesh, false);
-        cubeParent.GetComponent <MeshFilter>().mesh = combinedAllMesh; // Finally set our combined object to render
-        */
-        
-        // If the parent gameObject has no mesh filter then we should give it one
-        if (cubeParent.gameObject.GetComponent <MeshFilter>() == null)
-        {
-            cubeParent.transform.gameObject.AddComponent <MeshFilter>(); // Add a new meshFilter to our parent object
-            MeshFilter parentFilter = cubeParent.GetComponent <MeshFilter>();
-
-            // Create and calculate our new, combined mesh
-            parentFilter.sharedMesh = new Mesh(); // Set a blank custom mesh to our meshFilter
-            parentFilter.sharedMesh.CombineMeshes (combined, true); // Add our array of combined meshes onto this blank mesh and merge the sub-meshes
-            parentFilter.sharedMesh.RecalculateBounds(); // Calculate the bounds of the combined mesh
-            parentFilter.sharedMesh.RecalculateNormals(); // Calculate the normals of the combined mesh
-        }
-
-        // Add a MeshRenderer to our parent object if there isn't one
-        if (cubeParent.GetComponent <MeshRenderer>() == null)
-        {
-            cubeParent.AddComponent <MeshRenderer>();
-            MeshRenderer parentRenderer = cubeParent.GetComponent <MeshRenderer>();
-
-            parentRenderer.material = new Material (Shader.Find ("Standard")); // Add a base material
-        }
+        //combinedAllMesh.CombineMeshes (totalMesh, false);
+        //cubeParent.GetComponent <MeshFilter>().mesh = combinedAllMesh; // Finally set our combined object to render
     }
 }

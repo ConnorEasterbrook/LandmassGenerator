@@ -34,7 +34,7 @@ public class MapDisplay : MonoBehaviour
     public bool useFalloff;
     private float[,] falloffMap;
 
-    // PerlinColourMesh parameters
+    [Header ("3D Settings")]
     public bool threeDimensional;
     public Material cubeMat; // Set the base cube material
 
