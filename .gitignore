@@ -1,0 +1,9 @@
+.vscode/*
+Library/*
+ProjectSettings/*
+Temp/*
+Logs/*
+obj/*
+Packages/*
+Assembly-CSharp*
+New Unity Project.*

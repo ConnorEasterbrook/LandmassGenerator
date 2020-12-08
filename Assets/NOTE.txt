@@ -1,0 +1,35 @@
+Written in Visual Studio Code. So there may be weird formatting in other applications.
+
+I'll be going into detail more than I normally do in comments and notes, in an attempt to develop a good habit of it.
+It's worth noting that while this text file will offer a lot of guidance around the project, the scripts will have more in-depth comments.
+
+// Brief descriptions of the scripts and their goals
+Script description: 
+
+	MapDisplayEditor 	- Simply just an editor for the MapDisplay script.
+	MapDisplay			- Collect up all the display scripts into one handy little control script.
+
+	Voronoi 			- Create a voronoi diagram texture.
+	PerlinNoise			- Create a perlin noise texture & an array for the map pixel's intended height.
+	PerlinColour		- Create a colour texture based on the pixel's given heightMap from PerlinNoise.
+	FalloffGenerator	- Create a gradient texture & set the pixel's height level based on the gradient position.
+
+	CameraMovement		- Controls in-game camera movement
+
+// Showing what scripts link to others and the reasoning behind it
+Script links:
+
+	MapDisplayEditor 	- Linked to MapDisplay as its editor.
+	MapDisplay			- Linked to Voronoi for the voronoi distance map & voronoi colour map.
+						- Linked to PerlinNoise for the perlin noise map & get perlin noise pixel values.
+						- Linked to PerlinColour for the perlin colour map.
+							- It is worth noting that the perlin noise value is given to PerlinColour through MapDisplay and not PerlinNoise.
+						- Linked to FalloffGenerator for the falloff gradient map & falloff pixel height values .
+
+As I intend this project to have an educational use, I don't mind it being used in non-commercial projects. In fact, I've tried keeping things
+as separate as possible for easy use in other projects.
+
+I hope you're able to achieve what you're looking for with this!
+
+Sincerely,
+- Goatbandit 
