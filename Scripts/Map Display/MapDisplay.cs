@@ -14,11 +14,10 @@ public class MapDisplay : MonoBehaviour
     private MeshFilter meshFilter; // Selected gameObjects Mesh Filter
     private MeshRenderer meshRenderer; // Selected gameObjects Mesh Renderer
 
-    [Header ("Generation Settings")]
-    // Voronoi Parameters
+    [Header ("Voronoi Settings")]
     public int voronoiRegionAmount; // Set the amount of regions within the dimensions
 
-    // Perlin Noise Parameters
+    [Header ("Perlin Noise Settings")]
     [Min (2)] public float noiseScale; // The scale of the perlin noise on our map
     [Range (1, 8)] public int octaves; // How fine the detail is on the map
     [Range (0, 2)] public float persistance; // The fullness of the terrain
@@ -29,14 +28,15 @@ public class MapDisplay : MonoBehaviour
     // Perlin Colour Parameters
     public TerrainType[] perlinRegions;
     private float[,] noiseMap;
+    private Color[] colourMap;
 
-    // Perlin Mesh Parameters
-    public float meshHeightMultiplier;
-    public AnimationCurve meshHeightCurve;
-
-    // Falloff Parameters
+    [Header ("Falloff Settings")]
     public bool useFalloff;
     private float[,] falloffMap;
+
+    // PerlinColourMesh parameters
+    public bool threeDimensional;
+    public Material cubeMat; // Set the base cube material
 
     // Set the map display to be your desired map
     public enum DrawMode
@@ -54,6 +54,7 @@ public class MapDisplay : MonoBehaviour
     private PerlinNoise perlinNoise;
     private PerlinColour perlinColour;
     private FalloffGenerator falloff;
+    private VoxelMap voxelMap;
 
     public bool autoUpdate; // Choose whether we want to see inspector changes in real-time
 
@@ -71,6 +72,12 @@ public class MapDisplay : MonoBehaviour
             seed = new System.Random().Next();
         }
 
+        // Delete children in Generate() to avoid duplicates in editor
+        foreach (Transform child in transform)
+        {
+            DestroyImmediate (child.gameObject);
+        }
+
         DrawMapDisplay();
     }
 
@@ -81,7 +88,9 @@ public class MapDisplay : MonoBehaviour
         perlinNoise     = GetComponent <PerlinNoise>();
         perlinColour    = GetComponent <PerlinColour>();
         falloff         = GetComponent <FalloffGenerator>();
+        voxelMap        = GetComponent <VoxelMap>();
         
+        noiseMap = perlinNoise.GenerateNoiseMap (mapSize, seed, noiseScale, octaves, persistance, lacunarity, offset); // Establish the noiseMap values for our perlin options
         falloffMap = falloff.GenerateFalloffMapFloat (mapSize); // Get the desired falloff map values that will affect terrain generation
 
         if (useFalloff)
@@ -95,9 +104,19 @@ public class MapDisplay : MonoBehaviour
                 }
             }
         }
-        else
+        
+        // If threeDimensional = true then create a 3D representation of the rendered map. If false then destroy the 3D objects generated
+        if (threeDimensional)
         {
-            noiseMap = perlinNoise.GenerateNoiseMap (mapSize, seed, noiseScale, octaves, persistance, lacunarity, offset); // Establish the noiseMap values for our perlin options
+            // pColourMesh.ColourCubeSpawner (mapSize, noiseMap, perlinRegions, cubeMat);
+            voxelMap.EstablishVoxels (mapSize, displayPlane, noiseMap, perlinRegions);
+        }
+        else if (transform.childCount != 0)
+        {
+            foreach (Transform child in transform)
+            {
+                DestroyImmediate (child.gameObject);
+            }
         }
 
         // Establish required mesh components
