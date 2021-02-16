@@ -36,6 +36,8 @@ public class MapDisplay : MonoBehaviour
 
     [Header ("3D Settings")]
     public bool threeDimensional;
+    [Tooltip ("Do you want the cubes' y axis to be gradual or blocky?")]
+    public bool cubeHeight;
     public Material cubeMat; // Set the base cube material
 
     // Set the map display to be your desired map
@@ -47,6 +49,7 @@ public class MapDisplay : MonoBehaviour
         PerlinNoiseMap,
         ColourPerlinNoiseMap
     };
+    [Header ("Map Settings")]
     public DrawMode drawMode; // Allow us to change our DrawMode enum in inspector
 
     // Create references to desired scripts
@@ -56,6 +59,7 @@ public class MapDisplay : MonoBehaviour
     private FalloffGenerator falloff;
     private VoxelMap voxelMap;
 
+    [Header ("Inspector Tools")]
     public bool autoUpdate; // Choose whether we want to see inspector changes in real-time
 
     void Awake()
@@ -109,7 +113,7 @@ public class MapDisplay : MonoBehaviour
         if (threeDimensional)
         {
             // pColourMesh.ColourCubeSpawner (mapSize, noiseMap, perlinRegions, cubeMat);
-            voxelMap.EstablishVoxels (mapSize, displayPlane, noiseMap, perlinRegions);
+            voxelMap.EstablishVoxels (mapSize, displayPlane, noiseMap, perlinRegions, cubeHeight);
         }
         else if (transform.childCount != 0)
         {

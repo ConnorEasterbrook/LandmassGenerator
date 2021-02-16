@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class VoxelMap : MonoBehaviour
 {
+    //public GameObject cubePrefab; // The voxel prefab with the voxel generation scripts attached
     GameObject cubeParent; // Intended parent object of voxels
     GameObject combinedObj;
 
     Material voxelMat;
 
-    public void EstablishVoxels(int mapSize, GameObject mapPlane, float[,] noiseMap, TerrainType[] regions)
+    public void EstablishVoxels(int mapSize, GameObject mapPlane, float[,] noiseMap, TerrainType[] regions, bool cubeHeight)
     {
         cubeParent = new GameObject ("CubeParent"); // Establish an empty gameObject to use as a parent for generated cubes
         cubeParent.transform.SetParent (transform); // Set voxel parent to be the child of the object containing this script
@@ -39,9 +40,25 @@ public class VoxelMap : MonoBehaviour
 
                 // Establish individual voxel position
                 originPosition = this.transform.position - new Vector3 ((float) 15 - ((float) voxelSize.x / 2), 0, (float) 15 - ((float) voxelSize.z / 2)); // Set to this instance of voxel
-                originPosition.y = noiseMap [x, z] * 5; // Set y value of voxel
                 originPosition.x += x * voxelSize.x; // Move voxel origin position to correct coordinate
                 originPosition.z += z * voxelSize.z; // Move voxel origin position to correct coordinate
+                // Establish individual voxel y position based on user's preferences
+                if (cubeHeight)
+                {
+                    // Restrict water voxels from gaining height. Must change to block any visible holes in 3D shape //
+                    //if (noiseMap [x, z] <= 0.25)
+                    //{
+                    //    originPosition.y = 0;
+                    //}
+                    //else
+                    //{
+                        originPosition.y = Mathf.RoundToInt (noiseMap [x, z] * 5); // Set y value of voxel to be rounded and low-res (Minceraft-like)
+                    //}
+                }
+                else
+                {
+                    originPosition.y = noiseMap [x, z] * 5; // Set y value of voxel to be free and high-res
+                }
 
                 voxels [index].transform.position = originPosition;
                 voxels [index].transform.localScale = voxelSize;
@@ -232,27 +249,6 @@ public class VoxelMap : MonoBehaviour
         Mesh combinedMountainTipMesh = new Mesh(); // Make it into a new mesh
         combinedMountainTipMesh.CombineMeshes (mountainTipList.ToArray()); // Add all meshes in list to array
 
-        // Create array that will contain the combined mesh
-        CombineInstance[] totalMesh = new CombineInstance [8];
-
-        // Add all submeshes to the combined mesh in the same order. Transform localToWorldMatrix to stop any transform changes in the combination process
-        totalMesh[0].mesh = combinedDeepWaterMesh;
-        totalMesh[0].transform = cubeParent.transform.localToWorldMatrix;
-        totalMesh[1].mesh = combinedShallowWaterMesh;
-        totalMesh[1].transform = cubeParent.transform.localToWorldMatrix;
-        totalMesh[2].mesh = combinedSandMesh;
-        totalMesh[2].transform = cubeParent.transform.localToWorldMatrix;
-        totalMesh[3].mesh = combinedLowGrassMesh;
-        totalMesh[3].transform = cubeParent.transform.localToWorldMatrix;
-        totalMesh[4].mesh = combinedHighGrassMesh;
-        totalMesh[4].transform = cubeParent.transform.localToWorldMatrix;
-        totalMesh[5].mesh = combinedStoneMesh;
-        totalMesh[5].transform = cubeParent.transform.localToWorldMatrix;
-        totalMesh[6].mesh = combinedMountainMesh;
-        totalMesh[6].transform = cubeParent.transform.localToWorldMatrix;
-        totalMesh[7].mesh = combinedMountainTipMesh;
-        totalMesh[7].transform = cubeParent.transform.localToWorldMatrix;
-
         // Set our region parents to be the correct mesh filter
         deepWaterRegion     .GetComponent <MeshFilter>().mesh = combinedDeepWaterMesh;
         shallowWaterRegion  .GetComponent <MeshFilter>().mesh = combinedShallowWaterMesh;
@@ -282,12 +278,5 @@ public class VoxelMap : MonoBehaviour
         stoneRegion         .GetComponent <MeshRenderer>().material.color = regions [5].colour;
         mountainRegion      .GetComponent <MeshRenderer>().material.color = regions [6].colour;
         mountainTipRegion   .GetComponent <MeshRenderer>().material.color = regions [7].colour;
-
-        // Create the final combined mesh
-        //Mesh combinedAllMesh = new Mesh();
-
-        // Finally combine all the meshes. False so that regions are separate
-        //combinedAllMesh.CombineMeshes (totalMesh, false);
-        //cubeParent.GetComponent <MeshFilter>().mesh = combinedAllMesh; // Finally set our combined object to render
     }
 }
