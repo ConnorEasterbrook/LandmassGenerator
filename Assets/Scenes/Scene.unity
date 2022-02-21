@@ -98,8 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 4890085278179872738, guid: 35cab86843cea2040bc11296247ec495,
-    type: 2}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: 35cab86843cea2040bc11296247ec495, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -469,21 +468,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5e1661f5e1e88443912d7c269132eff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapSize: 100
+  mapSize: 500
   displayPlane: {fileID: 146555512}
   voronoiRegionAmount: 10
   noiseScale: 80.42
-  octaves: 4
-  persistance: 0.66
-  lacunarity: 1.77
-  seed: 36
+  octaves: 8
+  persistance: 0.43
+  lacunarity: 1.74
+  seed: 6
   offset: {x: 0, y: 0}
   perlinRegions:
   - name: Deep Water
     height: 0.1
     colour: {r: 0.20392159, g: 0.38431376, b: 0.7686275, a: 0}
   - name: Water
-    height: 0.25
+    height: 0.2
     colour: {r: 0.22862683, g: 0.43185064, b: 0.851, a: 0}
   - name: Sand
     height: 0.3
@@ -508,7 +507,7 @@ MonoBehaviour:
   cubeHeight: 0
   cubeMat: {fileID: 2100000, guid: 435b85e3fe2bac6459223404f2a24e48, type: 2}
   drawMode: 4
-  autoUpdate: 1
+  autoUpdate: 0
 --- !u!4 &1715030742
 Transform:
   m_ObjectHideFlags: 0
