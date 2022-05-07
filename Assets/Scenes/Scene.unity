@@ -473,8 +473,8 @@ MonoBehaviour:
   voronoiRegionAmount: 10
   noiseScale: 80.42
   octaves: 8
-  persistance: 0.43
-  lacunarity: 1.74
+  persistance: 0.5
+  lacunarity: 1.603
   seed: 6
   offset: {x: 0, y: 0}
   perlinRegions:
@@ -507,7 +507,7 @@ MonoBehaviour:
   cubeHeight: 0
   cubeMat: {fileID: 2100000, guid: 435b85e3fe2bac6459223404f2a24e48, type: 2}
   drawMode: 4
-  autoUpdate: 0
+  autoUpdate: 1
 --- !u!4 &1715030742
 Transform:
   m_ObjectHideFlags: 0
