@@ -10,6 +10,7 @@ public class MapDisplayEditor : Editor
     public override void OnInspectorGUI()
     {
         MapDisplay mapDisplay = (MapDisplay) target;
+        mapDisplay.GetReferences();
 
         if (DrawDefaultInspector())
         {
@@ -25,5 +26,3 @@ public class MapDisplayEditor : Editor
         }
     }
 }
-
-// - Goatbandit

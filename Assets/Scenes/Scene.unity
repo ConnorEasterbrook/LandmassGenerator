@@ -473,13 +473,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5e1661f5e1e88443912d7c269132eff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapSize: 500
+  mapSize: 200
   displayPlane: {fileID: 146555512}
   voronoiRegionAmount: 10
-  noiseScale: 80.42
-  octaves: 8
-  persistance: 0.5
-  lacunarity: 1.603
+  zoom: 50
+  levelOfDetail: 4
+  amplitude: 1.278
+  frequency: 1.413
   seed: 1035183932
   offset: {x: 0, y: 0}
   perlinRegions:
@@ -508,9 +508,6 @@ MonoBehaviour:
     height: 1
     colour: {r: 1, g: 1, b: 1, a: 0}
   useFalloff: 1
-  threeDimensional: 0
-  cubeHeight: 0
-  cubeMat: {fileID: 2100000, guid: 435b85e3fe2bac6459223404f2a24e48, type: 2}
   drawMode: 4
   autoUpdate: 1
 --- !u!4 &1715030742
@@ -576,6 +573,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f5a907c21c428349b48c1e4f9775f29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cubeParent: {fileID: 0}
+  combinedObj: {fileID: 0}
+  voxelMat: {fileID: 0}
 --- !u!1 &2019527339
 GameObject:
   m_ObjectHideFlags: 0
