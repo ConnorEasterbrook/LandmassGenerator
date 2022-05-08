@@ -64,7 +64,18 @@ public class MapDisplay : MonoBehaviour
 
     void Awake()
     {
+        GetReferences();
         Generate();
+    }
+
+    private void GetReferences()
+    {
+        // Establish our script references
+        voronoi         = GetComponent <Voronoi>(); 
+        perlinNoise     = GetComponent <PerlinNoise>();
+        perlinColour    = GetComponent <PerlinColour>();
+        falloff         = GetComponent <FalloffGenerator>();
+        voxelMap        = GetComponent <VoxelMap>();
     }
 
     // This function serves as our real time generator for both in and out of gameplay
@@ -76,7 +87,7 @@ public class MapDisplay : MonoBehaviour
             seed = new System.Random().Next();
         }
 
-        // Delete children in Generate() to avoid duplicates in editor
+        // Delete children in 3D Transform to avoid duplicates
         foreach (Transform child in transform)
         {
             DestroyImmediate (child.gameObject);
@@ -87,13 +98,6 @@ public class MapDisplay : MonoBehaviour
 
     void DrawMapDisplay()
     {
-        // Establish our script references
-        voronoi         = GetComponent <Voronoi>(); 
-        perlinNoise     = GetComponent <PerlinNoise>();
-        perlinColour    = GetComponent <PerlinColour>();
-        falloff         = GetComponent <FalloffGenerator>();
-        voxelMap        = GetComponent <VoxelMap>();
-        
         noiseMap = perlinNoise.GenerateNoiseMap (mapSize, seed, noiseScale, octaves, persistance, lacunarity, offset); // Establish the noiseMap values for our perlin options
         falloffMap = falloff.GenerateFalloffMapFloat (mapSize); // Get the desired falloff map values that will affect terrain generation
 
@@ -112,7 +116,6 @@ public class MapDisplay : MonoBehaviour
         // If threeDimensional = true then create a 3D representation of the rendered map. If false then destroy the 3D objects generated
         if (threeDimensional)
         {
-            // pColourMesh.ColourCubeSpawner (mapSize, noiseMap, perlinRegions, cubeMat);
             voxelMap.EstablishVoxels (mapSize, displayPlane, noiseMap, perlinRegions, cubeHeight);
         }
         else if (transform.childCount != 0)
