@@ -68,7 +68,12 @@ public class MapDisplay : MonoBehaviour
         Generate();
     }
 
-    private void GetReferences()
+    private void Start() 
+    {
+        autoUpdate = false;
+    }
+
+    public void GetReferences()
     {
         // Establish our script references
         voronoi         = GetComponent <Voronoi>(); 
@@ -175,5 +180,3 @@ public struct TerrainType
     [Tooltip ("Designate a colour")]
     public Color colour; // Paramater for us to set the desired colour of the terrain
 }
-
-// - Goatbandit
