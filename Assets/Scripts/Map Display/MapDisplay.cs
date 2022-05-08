@@ -10,18 +10,16 @@ public class MapDisplay : MonoBehaviour
     // Establish the display we'll be putting our texture on
     [Min (1)] public int mapSize; // Set dimensions of the image
     public GameObject displayPlane; // Desired GameObject to display textures on
-    private Renderer textureRenderer; // Map specific renderer
-    private MeshFilter meshFilter; // Selected gameObjects Mesh Filter
     private MeshRenderer meshRenderer; // Selected gameObjects Mesh Renderer
 
     [Header ("Voronoi Settings")]
     public int voronoiRegionAmount; // Set the amount of regions within the dimensions
 
     [Header ("Perlin Noise Settings")]
-    [Min (2)] public float noiseScale; // The scale of the perlin noise on our map
-    [Range (1, 8)] public int octaves; // How fine the detail is on the map
-    [Range (0, 2)] public float persistance; // The fullness of the terrain
-    [Range (1, 2)] public float lacunarity; // Aggressiveness of the noise details
+    [Range (50, 200)] public float zoom; // The scale of the perlin noise on our map
+    [Range (2, 8)] public int levelOfDetail; // How fine the detail is on the map
+    [Range (0.5f, 2)] public float amplitude; // The fullness of the terrain
+    [Range (0.5f, 2)] public float frequency; // Aggressiveness of the noise details
     public int seed; // The seed used for generation (0 means random)
     public Vector2 offset; // Move around the noise map in the editor
     
@@ -33,12 +31,6 @@ public class MapDisplay : MonoBehaviour
     [Header ("Falloff Settings")]
     public bool useFalloff;
     private float[,] falloffMap;
-
-    [Header ("3D Settings")]
-    public bool threeDimensional;
-    [Tooltip ("Do you want the cubes' y axis to be gradual or blocky?")]
-    public bool cubeHeight;
-    public Material cubeMat; // Set the base cube material
 
     // Set the map display to be your desired map
     public enum DrawMode
@@ -57,7 +49,6 @@ public class MapDisplay : MonoBehaviour
     private PerlinNoise perlinNoise;
     private PerlinColour perlinColour;
     private FalloffGenerator falloff;
-    private VoxelMap voxelMap;
 
     [Header ("Inspector Tools")]
     public bool autoUpdate; // Choose whether we want to see inspector changes in real-time
@@ -80,7 +71,9 @@ public class MapDisplay : MonoBehaviour
         perlinNoise     = GetComponent <PerlinNoise>();
         perlinColour    = GetComponent <PerlinColour>();
         falloff         = GetComponent <FalloffGenerator>();
-        voxelMap        = GetComponent <VoxelMap>();
+        
+        // Establish required mesh components
+        meshRenderer    = displayPlane.GetComponent <MeshRenderer>();
     }
 
     // This function serves as our real time generator for both in and out of gameplay
@@ -103,7 +96,7 @@ public class MapDisplay : MonoBehaviour
 
     void DrawMapDisplay()
     {
-        noiseMap = perlinNoise.GenerateNoiseMap (mapSize, seed, noiseScale, octaves, persistance, lacunarity, offset); // Establish the noiseMap values for our perlin options
+        noiseMap = perlinNoise.GenerateNoiseMap (mapSize, seed, zoom, levelOfDetail, amplitude, frequency, offset); // Establish the noiseMap values for our perlin options
         falloffMap = falloff.GenerateFalloffMapFloat (mapSize); // Get the desired falloff map values that will affect terrain generation
 
         if (useFalloff)
@@ -117,24 +110,6 @@ public class MapDisplay : MonoBehaviour
                 }
             }
         }
-        
-        // If threeDimensional = true then create a 3D representation of the rendered map. If false then destroy the 3D objects generated
-        if (threeDimensional)
-        {
-            voxelMap.EstablishVoxels (mapSize, displayPlane, noiseMap, perlinRegions, cubeHeight);
-        }
-        else if (transform.childCount != 0)
-        {
-            foreach (Transform child in transform)
-            {
-                DestroyImmediate (child.gameObject);
-            }
-        }
-
-        // Establish required mesh components
-        meshFilter      = displayPlane.GetComponent <MeshFilter>();
-        meshRenderer    = displayPlane.GetComponent <MeshRenderer>();
-
         // Select what is displayed by our selected enum by calling the inital function in the desired script. Carrying over dimensions and desired variables for texture generation
         // and bringing back the returned texture2D to DrawMap(), where we set the object material to the new texture
         if (drawMode == DrawMode.VoronoiColourMap)
@@ -151,7 +126,7 @@ public class MapDisplay : MonoBehaviour
         }
         else if (drawMode == DrawMode.PerlinNoiseMap)
         {
-            DrawMap (perlinNoise.GenerateNoiseTexture (mapSize, seed, noiseScale, octaves, persistance, lacunarity, offset));
+            DrawMap (perlinNoise.GenerateNoiseTexture (mapSize, seed, zoom, levelOfDetail, amplitude, frequency, offset));
         }
         else if (drawMode == DrawMode.ColourPerlinNoiseMap)
         {
