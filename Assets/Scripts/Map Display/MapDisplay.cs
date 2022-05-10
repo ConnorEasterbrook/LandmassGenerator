@@ -12,9 +12,6 @@ public class MapDisplay : MonoBehaviour
     public GameObject displayPlane; // Desired GameObject to display textures on
     private MeshRenderer meshRenderer; // Selected gameObjects Mesh Renderer
 
-    [Header ("Voronoi Settings")]
-    public int voronoiRegionAmount; // Set the amount of regions within the dimensions
-
     [Header ("Perlin Noise Settings")]
     [Range (50, 200)] public float zoom; // The scale of the perlin noise on our map
     [Range (2, 8)] public int levelOfDetail; // How fine the detail is on the map
@@ -32,6 +29,9 @@ public class MapDisplay : MonoBehaviour
     public bool useFalloff;
     private float[,] falloffMap;
 
+    [Header ("Voronoi Settings")]
+    public int voronoiRegionAmount; // Set the amount of regions within the dimensions
+
     // Set the map display to be your desired map
     public enum DrawMode
     {
@@ -45,10 +45,10 @@ public class MapDisplay : MonoBehaviour
     public DrawMode drawMode; // Allow us to change our DrawMode enum in inspector
 
     // Create references to desired scripts
-    private Voronoi voronoi;
-    private PerlinNoise perlinNoise;
-    private PerlinColour perlinColour;
-    private FalloffGenerator falloff;
+    public Voronoi voronoi;
+    public PerlinNoise perlinNoise;
+    public PerlinColour perlinColour;
+    public FalloffGenerator falloff;
 
     [Header ("Inspector Tools")]
     public bool autoUpdate; // Choose whether we want to see inspector changes in real-time
@@ -66,12 +66,6 @@ public class MapDisplay : MonoBehaviour
 
     public void GetReferences()
     {
-        // Establish our script references
-        voronoi         = GetComponent <Voronoi>(); 
-        perlinNoise     = GetComponent <PerlinNoise>();
-        perlinColour    = GetComponent <PerlinColour>();
-        falloff         = GetComponent <FalloffGenerator>();
-        
         // Establish required mesh components
         meshRenderer    = displayPlane.GetComponent <MeshRenderer>();
     }
