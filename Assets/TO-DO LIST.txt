@@ -1,0 +1,34 @@
+To-do list for the completion of this project:
+
+Visuals:
+- Free cam,
+- Switch between 2D & 3D,
+- Filtering (nearest, bilinear, etc.)
+- Globe map
+
+UI:
+- Map styles,
+- Map name,
+- Everything modifiable,
+- World editor
+
+Depth:
+- Texture,
+- Biomes,
+- Rivers,
+- Nature,
+- Religions,
+- Cultures,
+- States,
+- Provinces,
+- Borders,
+- Pathways and roads,
+- Population,
+- Emblems (vassals and lords),
+- Labels,
+- Landmarks
+
+Utility:
+- Coordinates,
+- Temperature,
+- Ruler

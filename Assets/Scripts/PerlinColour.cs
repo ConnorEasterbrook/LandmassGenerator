@@ -1,14 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-// - Goatbandit
 
 public class PerlinColour : MonoBehaviour
 {
     // This function serves to set our pixels to the correct colour based on their height and the given region parameters
-    // mapSize - The desired size of the map
-    // noiseMap - The perlin noise pixel value array carried over from MapDisplay.cs
-    // regions - The region parameter array carried over from MapDisplay.cs
     public Texture2D GenerateMap (int mapSize, float[,] noiseMap, TerrainType[] regions)
     {
         Color[] colourMap = new Color [mapSize * mapSize]; // Place pixels into image sized array for colour usage 
@@ -37,8 +33,6 @@ public class PerlinColour : MonoBehaviour
     }
 
     // This function serves to place the given colours onto our image texture
-    // colourMap - This is the array that holds the information on what colour our pixels should be based on their given region
-    // mapSize - The image dimensions brought over from MapDisplay.cs that dictate the size of the generated texture
     private Texture2D GetPerlinColourMapTexture (Color[] colourMap, int mapSize)
     {
         Texture2D tex = new Texture2D (mapSize, mapSize); // Create a new texture and set it to be the same dimensions as our given image
@@ -50,5 +44,3 @@ public class PerlinColour : MonoBehaviour
         return tex;
     }
 }
-
-// - Goatbandit

@@ -1,12 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-// - Goatbandit
 
 public class FalloffGenerator : MonoBehaviour
 {
     // This function serves to get the set height colour for each pixel in our map
-    // mapSize - The desired size of the map
     public Texture2D GenerateFalloffMap (int mapSize)
     {
         float[,] heightMap = new float [mapSize, mapSize]; // Create a 2D array to represent each pixel
@@ -29,7 +27,6 @@ public class FalloffGenerator : MonoBehaviour
     }
 
     // This function serves to generate the height float value for each pixel in our map
-    // mapSize - The desired size of the map
     public float[,] GenerateFalloffMapFloat (int mapSize) 
     {
 		float[,] map = new float [mapSize,mapSize]; // Create a 2D array to represent each pixel
@@ -52,7 +49,6 @@ public class FalloffGenerator : MonoBehaviour
 	}
 
     // This is our base calculation to represent the shape of our desired falloffMap
-    // value - The absolute value of each pixel
 	static float Evaluate (float value) 
     {
         // Establish basic values for graph calculation
@@ -64,8 +60,6 @@ public class FalloffGenerator : MonoBehaviour
 	}
 
     // This function serves to place the given colours onto our image texture
-    // colourMap - This is the array that holds the information on what colour our pixels should be based on their given region
-    // mapSize - The image dimensions brought over from MapDisplay.cs that dictate the size of the generated texture
     private Texture2D GetFalloffMap (Color[] colourMap, int mapSize)
     {
         Texture2D tex = new Texture2D (mapSize, mapSize); // Create a new texture and set it to be the same dimensions as our given image
@@ -77,5 +71,3 @@ public class FalloffGenerator : MonoBehaviour
         return tex;
     }
 }
-
-// - Goatbandit

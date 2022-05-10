@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-// - Goatbandit
 
 [CustomEditor (typeof (MapDisplay))]
 public class MapDisplayEditor : Editor

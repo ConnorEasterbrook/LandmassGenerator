@@ -1,19 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-// - Goatbandit
 
 // Generate and render a perlin noise value onto a texture for MapDisplay.cs
 public class PerlinNoise : MonoBehaviour
 {
     // Create and setup the perlin noise values that will make up the map display
-    // mapSize - The desired size of the map, dictated in MapDisplay.cs
-    // seed - The desired location of the map. It allows for a specified generation, meaning you can generate the same map more than once with ease
-    // noiseScale - The scale (zoom is probably a better description) of the noise on the map
-    // octaves - Dictates the fineness of detail within the map
-    // persistance - The fullness of the terrain
-    // lacunarity - The aggressiveness of terrain details
-    // offset - The coordinates that you wish to look at. Also allows you to look around beyond the borders of a generated map
     public Texture2D GenerateNoiseTexture (int mapSize, int seed, float noiseScale, int octaves, float persistance, float lacunarity, Vector2 offset)
     {
         float[,] noiseMap = new float [mapSize, mapSize]; // Set up the map values that will eventually be put into a texture
@@ -95,8 +87,6 @@ public class PerlinNoise : MonoBehaviour
     }
 
     // This function serves to create the NoiseMap texture from the perlin noise values
-    // noiseMap - The pixel array used to keep track of each pixels perlin value
-    // mapSize - The desired size of the map, dictated in MapDisplay.cs
     private Texture2D DrawNoiseMap (float[,] noiseMap, int mapSize)
     {
         Color[] pixelColours = new Color [mapSize * mapSize]; // Place pixels into image sized array for colour usage 
@@ -120,13 +110,6 @@ public class PerlinNoise : MonoBehaviour
     }
 
     // Create and setup the noiseMap values that will make up the colour map display
-    // mapSize - The desired size of the map, dictated in MapDisplay.cs
-    // seed - The desired location of the map. It allows for a specified generation, meaning you can generate the same map more than once with ease
-    // noiseScale - The scale (zoom is probably a better description) of the noise on the map
-    // octaves - Dictates the fineness of detail within the map
-    // persistance - The fullness of the terrain
-    // lacunarity - The aggressiveness of terrain details
-    // offset - The coordinates that you wish to look at. Also allows you to look around beyond the borders of a generated map
     public float[,] GenerateNoiseMap (int mapSize, int seed, float noiseScale, int octaves, float persistance, float lacunarity, Vector2 offset)
     {
         float[,] noiseMap = new float [mapSize, mapSize]; // Set up the map values that will eventually be put into a texture
@@ -207,5 +190,3 @@ public class PerlinNoise : MonoBehaviour
         return noiseMap; // Finally return the pixel values for colour generation
     }
 }
-
-// - Goatbandit
