@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-// - Goatbandit
 
 // Intended as a kind of 'game manager' script, MapDisplay allows us to control all variables related to displaying the desired map(s)
 public class MapDisplay : MonoBehaviour
@@ -129,7 +128,6 @@ public class MapDisplay : MonoBehaviour
     }
 
     // Set the displayPlane material to our given texture
-    // texture - The returned variable from calling this function with another from a different script
     void DrawMap (Texture2D texture)
     {
         meshRenderer.sharedMaterial.mainTexture = texture;
