@@ -9,13 +9,6 @@ public class GUI : MonoBehaviour
 
     public void setFalloffMap()
     {
-        if (mapDisplay.useFalloff)
-        {
-            mapDisplay.useFalloff = false;
-        }
-        else
-        {
-            mapDisplay.useFalloff = true;
-        }
+        
     }
 }
