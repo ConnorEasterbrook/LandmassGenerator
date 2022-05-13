@@ -1,5 +1,8 @@
 To-do list for the completion of this project:
 
+Core:
+- Change display resolution
+
 Visuals:
 - Free cam,
 - Switch between 2D & 3D,

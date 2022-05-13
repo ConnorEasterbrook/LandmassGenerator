@@ -9,7 +9,7 @@ public class IslandType : MonoBehaviour
         float[,] heightMap = new float[mapSize, mapSize]; // Create a 2D array to represent each pixel
 
         // Get the height float value for each pixel
-        GetHeightMapFloat(heightMap, mapSize, islandType);
+        heightMap = GetHeightMapFloat(heightMap, mapSize, islandType);
 
         Color[] colourMap = new Color[mapSize * mapSize]; // Place pixels into mapSized sized array for colour usage
 
@@ -26,40 +26,49 @@ public class IslandType : MonoBehaviour
         return GetMapTexture(colourMap, mapSize);
     }
 
-    void GetHeightMapFloat(float[,] heightMap, int mapSize, int islandType)
+    public float[,] GetHeightMapFloat(float[,] heightMap, int mapSize, int islandType)
     {
         if (islandType == 0)
         {
-            heightMap = GenerateFalloffMapFloat(mapSize);
+            return heightMap = GenerateFalloffMapFloat(mapSize);
         }
-        
+        else
+        {
+            return heightMap;
+        }
     }
 
     // This function serves to generate the height float value for each pixel in our map
     public float[,] GenerateFalloffMapFloat(int mapSize)
     {
-        float[,] map = new float[mapSize, mapSize]; // Create a 2D array to represent each pixel
+        float[,] heightMap = new float[mapSize, mapSize]; // Create a 2D array to represent each pixel
 
         // Loop through each pixel and generate the desired height value of each one
         for (int i = 0; i < mapSize; i++)
         {
             for (int j = 0; j < mapSize; j++)
             {
-                float x = i / mapSize * 2 - 1;
-                float y = j / mapSize * 2 - 1;
+                float x = i / (float)mapSize * 2 - 1;
+                float y = j / (float)mapSize * 2 - 1;
 
                 float value = Mathf.Max(Mathf.Abs(x), Mathf.Abs(y)); // Get the absolute value of the current pixel's pos
 
-                // Establish basic values for graph calculation
-                float a = 3;
-                float b = 2.2f;
-
-                // This Mathf.Pow usage is basically the mathematics behind our falloffMap graph
-                map[i, j] = Mathf.Pow(value, a) / (Mathf.Pow(value, a) + Mathf.Pow(b - b * value, a));
+                heightMap[i, j] = EvaluateFallOff(value);
             }
         }
 
-        return map;
+        return heightMap;
+    }
+
+    // This is our base calculation to represent the shape of our desired falloffMap
+    static float EvaluateFallOff(float value)
+    {
+        // Establish basic values for graph calculation
+        float a = 3;
+        float b = 2.2f;
+
+        // This Mathf.Pow usage is basically the mathematics behind our falloffMap graph
+        return Mathf.Pow(value, a) / (Mathf.Pow(value, a) + Mathf.Pow(b - b * value, a));
     }
 
     private Texture2D GetMapTexture(Color[] colourMap, int mapSize)

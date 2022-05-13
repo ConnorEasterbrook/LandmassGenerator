@@ -2021,7 +2021,7 @@ MonoBehaviour:
     colour: {r: 1, g: 1, b: 1, a: 0}
   islandType: 0
   voronoiRegionAmount: 10
-  drawMode: 4
+  drawMode: 2
   voronoi: {fileID: 1715030740}
   perlinNoise: {fileID: 1715030743}
   perlinColour: {fileID: 1715030744}
