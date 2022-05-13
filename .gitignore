@@ -1,9 +1,7 @@
-.vscode/*
-Library/*
-ProjectSettings/*
-Temp/*
-Logs/*
-obj/*
-Packages/*
-Assembly-CSharp*
-New Unity Project.*
+Library
+Logs
+Temp
+UserSettings/EditorUserSettings.asset
+CCTP-Sub-Project-Beginning.sln
+Assembly-CSharp.csproj
+.vscode/settings.json

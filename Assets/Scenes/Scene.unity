@@ -152,6 +152,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -1.01, z: 0}
   m_LocalScale: {x: 10.100004, y: 2, z: 10.100004}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 146555516}
   m_RootOrder: 0
@@ -180,6 +181,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -321,6 +323,7 @@ Transform:
   m_LocalRotation: {x: 0.33067915, y: 0, z: 0, w: 0.9437433}
   m_LocalPosition: {x: 0, y: 15.1, z: -24.12}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -369,6 +372,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -417,6 +421,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 3, y: 1, z: 3}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 25309271}
   m_Father: {fileID: 0}
@@ -468,14 +473,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5e1661f5e1e88443912d7c269132eff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapSize: 500
+  mapSize: 200
   displayPlane: {fileID: 146555512}
   voronoiRegionAmount: 10
-  noiseScale: 80.42
-  octaves: 8
-  persistance: 0.43
-  lacunarity: 1.74
-  seed: 6
+  zoom: 50
+  levelOfDetail: 4
+  amplitude: 1.278
+  frequency: 1.413
+  seed: 1035183932
   offset: {x: 0, y: 0}
   perlinRegions:
   - name: Deep Water
@@ -503,11 +508,8 @@ MonoBehaviour:
     height: 1
     colour: {r: 1, g: 1, b: 1, a: 0}
   useFalloff: 1
-  threeDimensional: 0
-  cubeHeight: 0
-  cubeMat: {fileID: 2100000, guid: 435b85e3fe2bac6459223404f2a24e48, type: 2}
   drawMode: 4
-  autoUpdate: 0
+  autoUpdate: 1
 --- !u!4 &1715030742
 Transform:
   m_ObjectHideFlags: 0
@@ -518,6 +520,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -2.28, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -570,6 +573,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f5a907c21c428349b48c1e4f9775f29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cubeParent: {fileID: 0}
+  combinedObj: {fileID: 0}
+  voxelMat: {fileID: 0}
 --- !u!1 &2019527339
 GameObject:
   m_ObjectHideFlags: 0
@@ -659,6 +665,7 @@ Transform:
   m_LocalRotation: {x: 0.40821794, y: -0.23456973, z: 0.109381676, w: 0.87542605}
   m_LocalPosition: {x: 0, y: 300, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
