@@ -32,6 +32,18 @@ public class IslandType : MonoBehaviour
         {
             return heightMap = GenerateFalloffMapFloat(mapSize);
         }
+        else if (islandType == 2)
+        {
+            return heightMap = GenerateRoundMapFloat(mapSize);
+        }
+        else if (islandType == 3)
+        {
+            return heightMap;
+        }
+        else if (islandType == 4)
+        {
+            return heightMap = GenerateLakeMapFloat(mapSize);
+        }
         else
         {
             return heightMap;
@@ -48,12 +60,73 @@ public class IslandType : MonoBehaviour
         {
             for (int j = 0; j < mapSize; j++)
             {
+                // Position of the gradient
                 float x = i / (float)mapSize * 2 - 1;
                 float y = j / (float)mapSize * 2 - 1;
 
-                float value = Mathf.Max(Mathf.Abs(x), Mathf.Abs(y)); // Get the absolute value of the current pixel's pos
+                float value = Mathf.Max(Mathf.Abs(x), Mathf.Abs(y)); // Limit the edges of the gradient
 
-                heightMap[i, j] = EvaluateFallOff(value);
+                heightMap[i, j] = GradientConstraints(value, 3, 2.2f);
+            }
+        }
+
+        return heightMap;
+    }
+
+    // This function serves to generate the height float value for each pixel in our map
+    public float[,] GenerateRoundMapFloat(int mapSize)
+    {
+        float[,] heightMap = new float[mapSize, mapSize]; // Create a 2D array to represent each pixel
+        Vector2 centerPoint = new Vector2(mapSize / 2, mapSize / 2);
+
+        // Loop through each pixel and generate the desired height value of each one
+        for (int x = 0; x < mapSize; x++)
+        {
+            for (int y = 0; y < mapSize; y++)
+            {
+                float distanceFromCenter = Vector2.Distance(centerPoint, new Vector2(x, y));
+                float pixelHeight = 1;
+
+                if ((1 - (distanceFromCenter / mapSize)) >= 0)
+                {
+                    pixelHeight = (0.375f + (distanceFromCenter / mapSize));
+                }
+                else
+                {
+                    pixelHeight = 0;
+                }
+
+                heightMap[x, y] = GradientConstraints(pixelHeight, 3, 3f);
+            }
+        }
+
+        return heightMap;
+    }
+
+    // This function serves to generate the height float value for each pixel in our map
+    public float[,] GenerateLakeMapFloat(int mapSize)
+    {
+        float[,] heightMap = new float[mapSize, mapSize]; // Create a 2D array to represent each pixel
+        Vector2 centerPoint = new Vector2(mapSize / 2, mapSize / 2);
+
+        // Loop through each pixel and generate the desired height value of each one
+        for (int y = 0; y < mapSize; y++)
+        {
+            for (int x = 0; x < mapSize; x++)
+            {
+                float distanceFromCenter = Vector2.Distance(centerPoint, new Vector2(x, y));
+                float pixelHeight = 1;
+
+                if ((1 - (distanceFromCenter / mapSize)) >= 0)
+                {
+                    pixelHeight = (1 - (distanceFromCenter / mapSize));
+                }
+                else
+                {
+                    pixelHeight = 0;
+                }
+
+                heightMap[x, y] = GradientConstraints(pixelHeight, 4f, 3.5f);
             }
         }
 
@@ -61,14 +134,14 @@ public class IslandType : MonoBehaviour
     }
 
     // This is our base calculation to represent the shape of our desired falloffMap
-    static float EvaluateFallOff(float value)
+    static float GradientConstraints(float value, float density, float size)
     {
         // Establish basic values for graph calculation
-        float a = 3;
-        float b = 2.2f;
+        float gradientDensity = density;
+        float gradientSize = size;
 
         // This Mathf.Pow usage is basically the mathematics behind our falloffMap graph
-        return Mathf.Pow(value, a) / (Mathf.Pow(value, a) + Mathf.Pow(b - b * value, a));
+        return Mathf.Pow(value, gradientDensity) / (Mathf.Pow(value, gradientDensity) + Mathf.Pow(gradientSize - gradientSize * value, gradientDensity));
     }
 
     private Texture2D GetMapTexture(Color[] colourMap, int mapSize)

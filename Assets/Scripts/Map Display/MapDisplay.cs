@@ -30,9 +30,10 @@ public class MapDisplay : MonoBehaviour
     {
         Regular,
         Pangaea,
-        Atoll,
+        Round,
         Ring,
-        Archipelago
+        Archipelago,
+        Lake
     };
     private int islandTypeIdentifier;
     private float[,] falloffMap;
@@ -145,7 +146,7 @@ public class MapDisplay : MonoBehaviour
         {
             islandTypeIdentifier = 0;
             
-            falloffMap = falloff.GenerateFalloffMapFloat(mapSize); // Get the desired falloff map values that will affect terrain generation
+            falloffMap = islandTypeScript.GenerateFalloffMapFloat(mapSize); // Get the desired falloff map values that will affect terrain generation
 
             // Loop through every pixel within the noiseMap and clamp it's value to the corresponding falloffMap value
             for (int x = 0; x < mapSize; x++)
@@ -164,13 +165,39 @@ public class MapDisplay : MonoBehaviour
         {
             islandTypeIdentifier = 2;
         }
-        else if (islandType == IslandTypeEnum.Atoll)
+        else if (islandType == IslandTypeEnum.Round)
         {
             islandTypeIdentifier = 2;
+            
+            falloffMap = islandTypeScript.GenerateRoundMapFloat(mapSize); // Get the desired falloff map values that will affect terrain generation
+
+            // Loop through every pixel within the noiseMap and clamp it's value to the corresponding falloffMap value
+            for (int x = 0; x < mapSize; x++)
+            {
+                for (int y = 0; y < mapSize; y++)
+                {
+                    noiseMap[x, y] = Mathf.Clamp01(noiseMap[x, y] - falloffMap[x, y]); // The clamp ensures that the white areas of falloffMap don't ruin our terrain
+                }
+            }
         }
         else if (islandType == IslandTypeEnum.Ring)
         {
             islandTypeIdentifier = 3; 
+        }
+        else if (islandType == IslandTypeEnum.Lake)
+        {
+            islandTypeIdentifier = 4;
+            
+            falloffMap = islandTypeScript.GenerateLakeMapFloat(mapSize); // Get the desired falloff map values that will affect terrain generation
+
+            // Loop through every pixel within the noiseMap and clamp it's value to the corresponding falloffMap value
+            for (int x = 0; x < mapSize; x++)
+            {
+                for (int y = 0; y < mapSize; y++)
+                {
+                    noiseMap[x, y] = Mathf.Clamp01(noiseMap[x, y] - falloffMap[x, y]); // The clamp ensures that the white areas of falloffMap don't ruin our terrain
+                }
+            }
         }
     }
 }
