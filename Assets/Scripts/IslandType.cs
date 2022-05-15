@@ -40,7 +40,7 @@ public class IslandType : MonoBehaviour
         {
             return heightMap;
         }
-        else if (islandType == 4)
+        else if (islandType == 5)
         {
             return heightMap = GenerateLakeMapFloat(mapSize);
         }

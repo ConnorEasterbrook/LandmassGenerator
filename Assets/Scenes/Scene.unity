@@ -578,7 +578,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Option A
+  m_Text: Island Type
 --- !u!222 &195576530
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -666,7 +666,7 @@ GameObject:
   - component: {fileID: 712623225}
   - component: {fileID: 712623224}
   m_Layer: 5
-  m_Name: Draw Mode
+  m_Name: Island Type
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

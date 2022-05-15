@@ -57,7 +57,6 @@ public class MapDisplay : MonoBehaviour
     public Voronoi voronoi;
     public PerlinNoise perlinNoise;
     public PerlinColour perlinColour;
-    public FalloffGenerator falloff;
     public IslandType islandTypeScript;
 
     [Header("Inspector Tools")]
@@ -161,10 +160,6 @@ public class MapDisplay : MonoBehaviour
         {
             islandTypeIdentifier = 1;
         }
-        else if (islandType == IslandTypeEnum.Archipelago)
-        {
-            islandTypeIdentifier = 2;
-        }
         else if (islandType == IslandTypeEnum.Round)
         {
             islandTypeIdentifier = 2;
@@ -184,9 +179,13 @@ public class MapDisplay : MonoBehaviour
         {
             islandTypeIdentifier = 3; 
         }
-        else if (islandType == IslandTypeEnum.Lake)
+        else if (islandType == IslandTypeEnum.Archipelago)
         {
             islandTypeIdentifier = 4;
+        }
+        else if (islandType == IslandTypeEnum.Lake)
+        {
+            islandTypeIdentifier = 5;
             
             falloffMap = islandTypeScript.GenerateLakeMapFloat(mapSize); // Get the desired falloff map values that will affect terrain generation
 
