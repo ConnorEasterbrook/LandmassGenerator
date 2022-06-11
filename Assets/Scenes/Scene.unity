@@ -578,7 +578,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Island Type
+  m_Text: 
 --- !u!222 &195576530
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -743,16 +743,22 @@ MonoBehaviour:
   m_ItemImage: {fileID: 0}
   m_Value: 0
   m_Options:
-    m_Options:
-    - m_Text: Option A
-      m_Image: {fileID: 0}
-    - m_Text: Option B
-      m_Image: {fileID: 0}
-    - m_Text: Option C
-      m_Image: {fileID: 0}
+    m_Options: []
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1055979823}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_AlphaFadeSpeed: 0.15
 --- !u!114 &712623225
 MonoBehaviour:
@@ -1239,6 +1245,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapDisplay: {fileID: 1715030741}
+  islandTypeDropdown: {fileID: 712623224}
 --- !u!1 &1180669957
 GameObject:
   m_ObjectHideFlags: 0
@@ -2019,13 +2026,12 @@ MonoBehaviour:
   - name: Mountain Tip
     height: 1
     colour: {r: 1, g: 1, b: 1, a: 0}
-  islandType: 2
+  islandType: 0
   voronoiRegionAmount: 10
   drawMode: 4
   voronoi: {fileID: 1715030740}
   perlinNoise: {fileID: 1715030743}
   perlinColour: {fileID: 1715030744}
-  falloff: {fileID: 1715030745}
   islandTypeScript: {fileID: 1715030746}
   autoUpdate: 1
 --- !u!4 &1715030742
