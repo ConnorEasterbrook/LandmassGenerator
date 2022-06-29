@@ -1,15 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-// - Goatbandit
 
 // Create and display a voronoi diagram
 public class Voronoi : MonoBehaviour
 {
-    // Generate a texture for our voronoi diagram by generating a random colour for each region, finding and colouring the pixels within that region to the given region colour, and then generating it
-    // into a new texture. Once fully executed, we return the created image texture with the designated pixel colours.
-    // mapSize - The image dimensions brought over from MapDisplay.cs that dictate the size of the generated texture
-    // regionAmount - The desired region amount, brought over from MapDisplay.cs, selecting how many polygonPoints are placed
+    // Generate a texture for our voronoi diagram by generating a random colour for each region, finding and colouring the pixels within that region to the given region colour, and then generating it into a new texture. Once fully executed, we return the created image texture with the designated pixel colours.
     public Texture2D GetColourImageTexture(int mapSize, int regionAmount)
     {
         Vector2Int[] polygonPoint = new Vector2Int [regionAmount]; // The points that'll be used to divide the area with
@@ -39,9 +35,6 @@ public class Voronoi : MonoBehaviour
     }
 
     // Generate a noise texture for our voronoi diagram by generating a colour for each pixel based on its proximity to a polygonPoint, and then generating it into a new texture. 
-    // Once fully executed, we return the created image texture with the designated pixel colours.
-    // mapSize - The image dimensions brought over from MapDisplay.cs that dictate the size of the generated texture
-    // regionAmount - The desired region amount, brought over from MapDisplay.cs, used here for finding their distance from each pixel
     public Texture2D GetCellularNoiseImageTexture(int mapSize, int regionAmount)
     {
         Vector2Int[] polygonPoint = new Vector2Int [regionAmount]; // The points that'll be used to divide the area with
@@ -80,7 +73,6 @@ public class Voronoi : MonoBehaviour
     }
 
     // This function serves to use the distance from a pixel to a polygonPoint to generate a colour value based on that distance
-    // distances - This is the pre-calculated distance between a pixel and a polygonPoint
     float GetMaxDistance (float[] distances)
     {
         float maxDistance = float.MinValue;
@@ -98,8 +90,6 @@ public class Voronoi : MonoBehaviour
     }
 
     // This function serves to find the closest polygonPoint to a given pixel
-    // pixelPos - This is the position of the pixel within the image dimension
-    // polygonPoint - Use the whole polygonPoint array to find the most suitable one to use
     int GetClosestPolygonPointIndex (Vector2Int pixelPos, Vector2Int[] polygonPoint)
     {
         float smallestDistance = float.MaxValue;
@@ -120,8 +110,6 @@ public class Voronoi : MonoBehaviour
     }
 
     // This function serves to place the given colours onto our image texture
-    // pixelColours - This is the array that holds the information on what colour our pixels should be based on their given region
-    // mapSize - The image dimensions brought over from MapDisplay.cs that dictate the size of the generated texture
     private Texture2D GetImageFromColourArray (Color[] pixelColours, int mapSize)
     {
         Texture2D tex = new Texture2D (mapSize, mapSize); // Create a new texture and set it to be the same dimensions as our given image
@@ -133,5 +121,3 @@ public class Voronoi : MonoBehaviour
         return tex; 
     }
 }
-
-// - Goatbandit

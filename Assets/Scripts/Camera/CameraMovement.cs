@@ -1,13 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-// - Goatbandit
 
 public class CameraMovement : MonoBehaviour
 {
     public GameObject desiredCameraTarget; // Select what you'd like to focus the camera on
 
-    public int speed = 5; // Select your desired movement speed for automatic turning
+    public int speed = 10; // Select your desired movement speed for automatic turning
     
     void Update()
     {
@@ -15,5 +14,3 @@ public class CameraMovement : MonoBehaviour
         transform.Translate (Vector3.right * speed * Time.deltaTime); // Begin circular movement multiplied by the desired speed
     }
 }
-
-// - Goatbandit
